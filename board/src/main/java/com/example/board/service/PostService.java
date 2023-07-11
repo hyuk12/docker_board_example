@@ -5,6 +5,8 @@ import com.example.board.entity.Post;
 import com.example.board.repository.PostRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class PostService {
 
@@ -23,5 +25,9 @@ public class PostService {
 
         postRepository.save(post);
         return post.getId();
+    }
+
+    public List<Post> getPosts() {
+        return postRepository.findAll();
     }
 }

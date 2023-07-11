@@ -1,0 +1,45 @@
+version: "3.8"
+services:
+  mysql:
+    image: mysql
+    container_name: mysql
+    volumes:
+      - data:/var/lib/mysql/data
+    environment:
+      MYSQL_DATABASE: board
+      MYSQL_USER: root
+      MYSQL_ROOT_PASSWORD: 1q2w3e4r
+    ports:
+      - '3306:3306'
+
+#    env_file:a
+#      - ./env/mongo.env
+
+  frontend:
+    container_name: frontend
+    build: ./frontend
+    ports:
+      - '3000:3000'
+    volumes:
+      - ./frontend/src:/app/src
+    stdin_open: true
+    tty: true
+    depends_on:
+      - backend
+
+  backend:
+    container_name: backend
+    image: 'spring-app'
+    ports:
+      - '8080:8080'
+    volumes:
+      - logs:/app/logs
+      - .:/app
+    links:
+      - mysql
+    depends_on:
+      - mysql
+
+volumes:
+  data:
+  logs:
